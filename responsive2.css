@@ -1,0 +1,158 @@
+@media screen and (max-width: 1280px) {
+    .sidebar {
+        width: 220px;
+        padding: 16px;
+    }
+
+    .btn {
+        height: 50px;
+
+        button {
+            height: 45px;
+        }
+    }
+
+    .table-con {
+        margin-left: 230px;
+    }
+    .table-container {
+        width: 50%;
+        height: 500px;
+        margin-right: 30px;
+    }
+
+    .slider-container {
+        margin-left: 0px;
+        width: 220px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .sidebar {
+        width: 180px;
+        padding: 10px;
+    }
+
+    .menu a {
+        font-size: 14px;
+    }
+
+    .table-con {
+        margin-left: 190px;
+        width: 22%;
+        height: 300px;
+
+        th {
+            font-size: 14px;
+        }
+    }
+
+    .table-container {
+        width: 49%;
+        height: 480px;
+        margin-right: 20px;
+
+        th {
+            font-size: 14px;
+        }
+    }
+
+    .slider-container {
+        width: 180px;
+        top: 570px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100vw;
+        position: static;
+        height: 220px;
+    }
+    .logo {
+        margin-bottom: 0px;
+    }
+    .logo img {
+        width: 110px;
+    }
+    .logo h1 {
+        display: none;
+    }
+    .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+    .bar {
+        .box {
+            width: 80%;
+        }
+    }
+    .btn {
+        justify-content: center;
+        margin-top: 8px;
+    }
+    .container {
+        justify-content: center;
+        flex-direction: column;
+    }
+    .table-con {
+        width: 90%;
+        margin-left: 32px;
+    }
+    .table-container {
+        margin-top: 12px;
+        width: 90%;
+        margin-left: 32px;
+    }
+    .slider-container {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 100vw;
+        position: static;
+        height: 220px;
+    }
+    .logo {
+        margin-bottom: 0px;
+    }
+    .logo img {
+        width: 110px;
+    }
+    .logo h1 {
+        display: none;
+    }
+    .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+    .bar {
+        .box {
+            width: 80%;
+        }
+    }
+    .btn {
+        justify-content: center;
+        margin-top: 8px;
+    }
+    .container {
+        justify-content: center;
+        flex-direction: column;
+    }
+    .table-con {
+        width: 90%;
+        margin-left: 20px;
+    }
+    .table-container {
+        margin-top: 12px;
+        width: 90%;
+        margin-left: 20px;
+    }
+    .slider-container {
+        display: none;
+    }
+}

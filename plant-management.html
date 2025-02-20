@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenSync</title>
+
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="responsive2.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    
+    <div class="sidebar">
+        <div class="logo">
+            <img src="img/logo.png" alt="Logo">
+            <h1>GreenSync</h1>
+        </div>
+        
+        <div class="menu">
+            <a href="plant-dashboard.html"><i class="fas fa-plug"></i> Dashboard</a>
+            <a href="plant-management.html" class="active"><i class="fas fa-file-invoice-dollar"></i> Management</a>
+            <a href="#"><i class="fas fa-user-friends"></i> Members</a>
+            <a href="#"><i class="fas fa-folder"></i> Projects</a>
+            <a href="#"><i class="fas fa-credit-card"></i> Plans & Billing</a>
+            <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="bar">
+        <div class="box" data-aos="fade-down">
+            <h1>Management Module</h1><br>
+            <p>status: <span>Active</span></p>
+        </div>
+    </div>
+
+    <div class="btn">
+        <button onclick="openModal(1)" data-aos="flip-left"><i class="fa-solid fa-plus"></i> Add Plant</button>
+        <button onclick="openModal(2)" data-aos="flip-left"><i class="fa-solid fa-globe"></i> Add All</button>
+    </div>
+
+    <div class="container">
+        <div class="table-con" data-aos="zoom-in">
+            <table id="plantTable1">
+                <thead>
+                    <tr>
+                        <th>Plant ID</th>
+                        <th>Plant Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container" data-aos="zoom-in">
+            <table id="plantTable">
+                <thead>
+                    <tr>
+                        <th>Plant ID</th>
+                        <th>Plant Name</th>
+                        <th>Plant Season</th>
+                        <th>Growth Stage</th>
+                        <th>Crop Density</th>
+                        <th>Pest Pressure</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide"><img src="img/a.jpg" alt="Image 1"></div>
+            <div class="slide"><img src="img/b.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="img/c.jpg" alt="Image 3"></div>
+            <div class="slide"><img src="img/d.jpg" alt="Image 4"></div>
+            <div class="slide"><img src="img/e.jpg" alt="Image 5"></div>
+        </div>
+    </div>
+
+    <!-- Modal Add-->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="top-modal">
+                <span class="close-btn" onclick="closeModal(1)">&times;</span>
+                <i class="fa-solid fa-circle-plus"></i>
+                <h2>Add Plant</h2>
+            </div>
+            <form id="subplantForm">
+                <label>Plant Name:</label>
+                <input type="text" id="plantName" placeholder="Enter your plant name" required>
+                <button id="submit" type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Add All-->
+    <div class="addall" id="addall">
+        <div class="modal-content">
+            <div class="top-modal">
+                <span class="close-btn" onclick="closeModal(2)">&times;</span>
+                <i class="fa-solid fa-circle-plus"></i>
+                <h2>Add All</h2>
+            </div>
+            <form id="plantForm">
+                <select id="plantName1">
+                    <option>Loading...</option>
+                </select>
+                <select id="plantSeason1">
+                    <option>Loading...</option>
+                </select>
+                <select id="growthStage1">
+                    <option>Loading...</option>
+                </select>
+                <input type="number" id="cropDensity1" placeholder="Enter your crop density" step="any" required>
+                <input type="number" id="pestPressure1" placeholder="Enter your pest pressure" step="any" required>
+                <button id="submit" type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit-->
+    <div class="edit" id="edit">
+        <div class="modal-content">
+            <div class="top-modal">
+                <span class="close-btn" onclick="closeModal(3)">&times;</span>
+                <i class="fa-solid fa-circle-plus"></i>
+                <h2>Edit</h2>
+            </div>
+            <form id="plantForm">
+                <select id="plantName2">
+                    <option>Loading...</option>
+                </select>
+                <select id="plantseason2">
+                    <option>Loading...</option>
+                </select>
+                <select id="growthstage2">
+                    <option>Loading...</option>
+                </select>
+                <input type="number" id="cropdensity2" placeholder="Enter your crop density" step="any">
+                <input type="number" id="pestpressure2" placeholder="Enter your pest pressure" step="any">
+                <button id="submit" type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="plant-management.js"></script>
+</body>
+</html>
