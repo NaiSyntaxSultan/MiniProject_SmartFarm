@@ -76,6 +76,28 @@ app.get('/users/:id', async (req, res) => {
     }
 })
 
+// path = GET /users/:id สำหรับการดึง users หลายคนออกมา
+app.get('/plants/:id', async (req, res) => {
+    try {
+        let id = req.params.id
+        const results = await conn.query('SELECT * FROM plants WHERE PlantID = ?', id)
+
+        if (results[0].length == 0) {
+            //โยนทิ้ง
+            throw { statusCode: 404, message: 'not found!!' }
+            
+        } 
+        res.json(results[0][0])
+
+    } catch (error) {
+        let statusCode = error.statusCode || 500
+        res.status(statusCode).json({
+            message: 'something wrong',
+            errorMessage: error.message
+        })
+    }
+})
+
 // path = POST /users สำหรับการสร้าง users ใหม่ที่บันทึกเข้ามา โดยใช้ bcrypt ในการเข้ารหัส password
 app.post('/users' , async (req, res) => {
     try {

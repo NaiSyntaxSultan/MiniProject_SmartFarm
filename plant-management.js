@@ -52,21 +52,35 @@ const loadData = async () => {
         })
     }
 
-    // button class=editt
-    // const editDOMs = document.getElementsByClassName('editt')
+    // button class=edit
+    const editDOMs = document.getElementsByClassName('editt')
 
-    // for (let i=0;i<editDOMs.length;i++) {
-    //     editDOMs[i].addEventListener('click', async (event) => {
-    //         // ดึง id ออกมา
-    //         const id = event.target.dataset.id
-    //         try {
-    //             await axios.delete(`${BASE_URL}/plants/${id}`)
-    //             loadData() // call function ตัวเอง
-    //         } catch (error) {
-    //             console.log('error', error)
-    //         }
-    //     })
-    // }
+    for (let i=0;i<editDOMs.length;i++) {
+        editDOMs[i].addEventListener('click', async (event) => {
+            // ดึง id ออกมา
+            const id = event.target.dataset.id
+            try {
+                const response = await axios.get(`${BASE_URL}/plants/${id}`)
+                const plant = response.data
+
+                let plantName = document.getElementById('plantName2')
+                let plantSeason = document.getElementById('plantseason2')
+                let growthStage = document.getElementById('growthstage2')
+                let cropDensity = document.getElementById('cropdensity2')
+                let pestPressure = document.getElementById('pestpressure2')
+
+                plantName.value = plant.PlantName
+                plantSeason.value = plant.PlantSeason
+                growthStage.value = plant.GrowthStage
+                cropDensity.value = plant.CropDensity
+                pestPressure.value = plant.PestPressure
+
+            }
+            catch (error) {
+                console.log('error', error)
+            }
+        })
+    }
 }
 
 const loadsubplant =  async () => {
@@ -100,9 +114,14 @@ const dropdown =  async () => {
     // Load subplantsgr ทั้งหมดออกมาจาก API
     const response3 = await axios.get(`${BASE_URL}/subplantsgr`)
 
+    // add
     const subplantsDOM = document.querySelector("#plantName1")
     const subplantseasonDOM = document.querySelector("#plantSeason1")
     const subgrowthstageDOM = document.querySelector("#growthStage1")
+    // edit
+    const subplantsDOM1 = document.querySelector("#plantName2")
+    const subplantseasonDOM1 = document.querySelector("#plantseason2")
+    const subgrowthstageDOM1 = document.querySelector("#growthstage2")
 
     let htmlData1 = '<option value="">Select a Plant</option>'
     // นำ plants ที่โหลดมาใส่กลับเข้าไปใน html
@@ -125,9 +144,14 @@ const dropdown =  async () => {
         htmlData3 += `<option value="${plant.PlantID3}">${plant.GrowthStage}</option>`
     }
 
+    // add
     subplantsDOM.innerHTML = htmlData1
     subplantseasonDOM.innerHTML = htmlData2
     subgrowthstageDOM.innerHTML = htmlData3
+    // edit
+    subplantsDOM1.innerHTML = htmlData1
+    subplantseasonDOM1.innerHTML = htmlData2
+    subgrowthstageDOM1.innerHTML = htmlData3
 }
 
 function openModal(num) {
@@ -144,13 +168,14 @@ function openModal(num) {
 function closeModal(num) {
     if (num == 1) {
         document.getElementById("modal").classList.remove("show");
+        loadsubplant()
     } else if (num == 2) {
         document.getElementById('addall').classList.remove('show');
+        loadData()
     } else {
         document.getElementById("edit").classList.remove("show");
+        loadData()
     }
-    
-    window.location.reload();
 }
 
 const validateDate = (userData,num) => {
