@@ -6,6 +6,7 @@ window.onload = async () => {
     await loadData()
     await dropdown()
 }
+let selectedPlantID = null;  // เก็บค่า ID ของพืชที่กำลังแก้ไข
 
 const loadData = async () => {
     console.log('on load')
@@ -58,9 +59,9 @@ const loadData = async () => {
     for (let i=0;i<editDOMs.length;i++) {
         editDOMs[i].addEventListener('click', async (event) => {
             // ดึง id ออกมา
-            const id = event.target.dataset.id
+            selectedPlantID = event.target.dataset.id
             try {
-                const response = await axios.get(`${BASE_URL}/plants/${id}`)
+                const response = await axios.get(`${BASE_URL}/plants/${selectedPlantID}`)
                 const plant = response.data
 
                 let plantName = document.getElementById('plantName2')
@@ -82,6 +83,61 @@ const loadData = async () => {
         })
     }
 }
+
+
+document.getElementById('editplantForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // ป้องกันการรีเฟรชหน้า
+
+    let plantname = document.getElementById('plantName2').value;
+    let plantseason = document.getElementById('plantseason2').value;
+    let growthstage = document.getElementById('growthstage2').value;
+    let cropDensity = document.getElementById('cropdensity2').value.trim();
+    let pestPressure = document.getElementById('pestpressure2').value.trim();
+
+
+    try {
+
+        let plantData = {
+            "PlantName": plantname,
+            "PlantSeason": plantseason,
+            "GrowthStage": growthstage,
+            "CropDensity": cropDensity,
+            "PestPressure": pestPressure
+        };
+
+        console.log('Updating data:', plantData);
+
+        const errors = validateDate(plantData,2)
+
+        if (errors.length > 0) {
+            // มี error เกิดขึ้น
+            throw {
+                message: 'กรอกข้อมูลไม่ครบ',
+                errors: errors
+            }
+        }
+    
+        const response = await axios.put(`${BASE_URL}/plants/${selectedPlantID}`, plantData);
+        console.log('Response:', response.data);
+        alert('แก้ไขข้อมูลเรียบร้อย');
+        document.getElementById('editplantForm').reset();
+    } catch (error) {
+
+        let htmlData = error.message
+        htmlData += 'กรุณากรอก '
+        for(let i=0;i<error.errors.length;i++) {
+            htmlData += error.errors[i]
+
+            if (i < error.errors.length-1) {
+                htmlData += ','
+            }
+        }
+
+        console.log('Error Message', error.message)
+        console.error('Error:', error.errors);
+        alert(htmlData);
+    }
+});
 
 const loadsubplant =  async () => {
     console.log('on loadsubplant')
@@ -158,6 +214,7 @@ function openModal(num) {
     if (num == 1){
         document.getElementById("modal").classList.add("show");
     } else if (num == 2) {
+        dropdown()
         document.getElementById('addall').classList.add('show');
     } else {
         document.getElementById('edit').classList.add('show');

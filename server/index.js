@@ -197,6 +197,24 @@ app.put('/users/:id', async (req,res) => {
     }
 })
 
+// path = PUT /plants/:id สำหรับการแก้ไข plants รายคน ตาม id
+app.put('/plants/:id', async (req,res) => {
+    try {
+        let id = req.params.id
+        let updateplant = req.body
+        const [results] = await conn.query('UPDATE plants SET ? WHERE PlantID = ?', [updateplant, id])
+        res.json({
+            message: 'update ok',
+            data: results[0]
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'something wrong',
+            errorMessage: error.message
+        })
+    }
+})
+
 // path = PATCH /user/:id
 app.patch('/user/:id', (req,res) => {
     let id = req.params.id
