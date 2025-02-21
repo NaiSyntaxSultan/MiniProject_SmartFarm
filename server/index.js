@@ -76,7 +76,7 @@ app.get('/users/:id', async (req, res) => {
     }
 })
 
-// path = POST /users สำหรับการสร้าง users ใหม่ที่บันทึกเข้ามา
+// path = POST /users สำหรับการสร้าง users ใหม่ที่บันทึกเข้ามา โดยใช้ bcrypt ในการเข้ารหัส password
 app.post('/users' , async (req, res) => {
     try {
         const { Username, Password, Email } = req.body
@@ -99,6 +99,7 @@ app.post('/users' , async (req, res) => {
     }
 })
 
+// path = POST /users/login สำหรับการ login โดยต้องเช็คว่า username และ password ตรงกับที่มีในระบบหรือไม่
 app.post('/users/login', async (req, res) => {
     try {
         const { Username, Password} = req.body
@@ -106,15 +107,15 @@ app.post('/users/login', async (req, res) => {
         const userData = results[0]
         const match = await bcrypt.compare(Password, userData.Password)
         if (!match) {
-            res.status(400).json({
-                message: 'login fail'
-            })
-            return false
-        } else {
-            res.json ({
-                message: 'login success'
-            })
+            return res.status(400).json({ 
+                message: 'login fail' 
+            });
         }
+        return res.json({ 
+            username: userData.Username,
+            message: 'login success',
+            role: userData.UserRole
+        });        
     } catch (error) {
         res.status(401).json({
             message: 'login fail'
