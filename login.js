@@ -32,17 +32,24 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
                 errors: errors
             }
         }
-    
-        const response = await axios.post('http://localhost:8000/users/login', userData);
-        console.log('response', response.data.message);
-        let welcome = 'ยินดีต้อนรับ ' + response.data.username
-        alert(welcome);
-        if (response.data.role == 'admin') {
-            window.location.href = 'admin.html';
-        } else {
-            window.location.href = 'index.html';
-        }
         
+        try {
+            const response = await axios.post('http://localhost:8000/users/login', userData);
+            console.log('response', response.data.message);
+            let welcome = response.data.message
+            alert(welcome);
+            if (response.data.role == 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert('เกิดข้อผิดพลาดบางอย่าง');
+            }
+        }
     } catch (error) {
 
         let htmlData = error.message

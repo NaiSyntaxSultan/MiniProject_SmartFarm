@@ -1,23 +1,21 @@
 const BASE_URL = 'http://localhost:8000'
 
 let barChart, pieChart;
-let sensorHistory = []; // เก็บค่าข้อมูลเซ็นเซอร์ที่ได้รับมาแต่ละครั้ง
-const MAX_HISTORY = 10; // กำหนดจำนวนข้อมูลที่ใช้คำนวณค่าเฉลี่ย
-
+const UPDATE_INTERVAL = 5000;
 window.onload = async () => {
     await loadData()
     await loadAllData()
+
+    // ทำการโหลดข้อมูลทุกๆ 5 วินาที
+    setInterval(async () => {
+        await loadData()
+        await loadAllData()
+    }, UPDATE_INTERVAL);
 }
 
 const loadData = async () => {
-    const response = await axios.get(`${BASE_URL}/sensors/all`)
-    const sensors = response.data
-
-    // เพิ่มข้อมูลใหม่ลงใน sensorHistory และลบข้อมูลเก่าหากเกินจำนวนที่กำหนด
-    sensorHistory.push(sensors);
-    if (sensorHistory.length > MAX_HISTORY) {
-        sensorHistory.shift();
-    }
+    const response = await axios.get(`${BASE_URL}/sensors/now`)
+    const sensors = response.data[0]
 
     document.getElementById("temp").innerText = `${sensors.Temperature} °C`;
     document.getElementById("humidity").innerText = `${sensors.Humidity} %`;
@@ -26,35 +24,86 @@ const loadData = async () => {
     document.getElementById("potassium").innerText = `${sensors.Potassium} mg/kg`;
     document.getElementById("ph").innerText = `${sensors.PH}`;
     document.getElementById("rainfall").innerText = `${sensors.Rainfall} mm`;
-
-    // คำนวณค่าเฉลี่ยของข้อมูลเซ็นเซอร์
-    const avgSensors = calculateAverage(sensorHistory);
-    updateCharts(avgSensors);
 }
 
-// ฟังก์ชันคำนวณค่าเฉลี่ยของค่าต่างๆ ใน sensorHistory
-const calculateAverage = (data) => {
-    const keys = ['Temperature', 'Humidity', 'Nitrogen', 'Phosphorus', 'Potassium', 'PH', 'Rainfall'];
-    let avg = {};
+// แสดงข้อมูลเซ็นเซอร์ทั้งหมดบนตาราง
+const loadAllData =  async () => {
+    // Load sensors ทั้งหมดออกมาจาก API
+    const response = await axios.get(`${BASE_URL}/sensors/all`)
+    const sensorData = response.data
 
-    for (let i = 0; i < keys.length; i++) {
-        let sum = 0;
-        for (let j = 0; j < data.length; j++) {
-            sum += data[j][keys[i]];
-        }
-        avg[keys[i]] = sum / data.length;
+    const allDataDOM = document.querySelector("#sensorTable tbody")
+
+    let htmlData = ''
+    // นำ plants ที่โหลดมาใส่กลับเข้าไปใน html
+    for (let i=0;i<response.data.length;i++) {
+        let data = response.data[i]
+        htmlData += `<tr>
+            <td>${i+1}</td>
+            <td>${data.Timestamp}</td>
+            <td>${data.Temperature}</td>
+            <td>${data.Humidity}</td>
+            <td>${data.Nitrogen}</td>
+            <td>${data.Phosphorus}</td>
+            <td>${data.Potassium}</td>
+            <td>${data.PH}</td>
+            <td>${data.Rainfall}</td>
+        </tr>`
     }
 
-    return avg;
+    allDataDOM.innerHTML = htmlData
+
+    const averages = calculateAverages(sensorData)
+    console.log(averages)
+    updateChart(averages);
+
 }
 
+// ฟังก์ชันคำนวณค่าเฉลี่ยของค่าต่างๆ ใน sensorData
+const calculateAverages = (data) => {
+    let sum = {
+        Temperature: 0,
+        Humidity: 0,
+        Nitrogen: 0,
+        Phosphorus: 0,
+        Potassium: 0,
+        PH: 0,
+        Rainfall: 0
+    };
 
-const updateCharts = (sensors) => {
+    // วนลูปสะสมค่าของแต่ละคอลัมน์
+    for (let i = 0; i < data.length; i++) {
+        sum.Temperature += data[i].Temperature;
+        sum.Humidity += data[i].Humidity;
+        sum.Nitrogen += data[i].Nitrogen;
+        sum.Phosphorus += data[i].Phosphorus;
+        sum.Potassium += data[i].Potassium;
+        sum.PH += data[i].PH;
+        sum.Rainfall += data[i].Rainfall;
+    }
+
+    // คำนวณค่าเฉลี่ย
+    let count = data.length;
+    let averages = {
+        Temperature: (sum.Temperature / count).toFixed(2),
+        Humidity: (sum.Humidity / count).toFixed(2),
+        Nitrogen: (sum.Nitrogen / count).toFixed(2),
+        Phosphorus: (sum.Phosphorus / count).toFixed(2),
+        Potassium: (sum.Potassium / count).toFixed(2),
+        PH: (sum.PH / count).toFixed(2),
+        Rainfall: (sum.Rainfall / count).toFixed(2)
+    };
+
+    return averages;
+}
+
+// ฟังก์ชันอัปเดตข้อมูลใน Bar Chart และ Pie Chart
+const updateChart = (averages) => {
     // ข้อมูลสำหรับ Bar Chart (แสดงค่าธาตุอาหารในดิน)
-    const barData = [sensors.Nitrogen, sensors.Phosphorus, sensors.Potassium];
+    const barData = [averages.Nitrogen, averages.Phosphorus, averages.Potassium];
     
     // ข้อมูลสำหรับ Pie Chart (แสดงค่าภาวะแวดล้อม)
-    const pieData = [sensors.Temperature, sensors.Humidity, sensors.PH, sensors.Rainfall];
+    const pieData = [averages.Temperature, averages.Humidity, averages.PH, averages.Rainfall];
 
     const barCtx = document.getElementById('myChart').getContext('2d');
     const pieCtx = document.getElementById('myChart1').getContext('2d');
@@ -107,31 +156,4 @@ const updateCharts = (sensors) => {
         pieChart.data.datasets[0].data = pieData;
         pieChart.update();
     }
-}
-
-// แสดงข้อมูลเซ็นเซอร์ทั้งหมดบนตาราง
-const loadAllData =  async () => {
-    // Load sensors ทั้งหมดออกมาจาก API
-    const response = await axios.get(`${BASE_URL}/sensors/all`)
-
-    const allDataDOM = document.querySelector("#sensorTable tbody")
-
-    let htmlData = ''
-    // นำ plants ที่โหลดมาใส่กลับเข้าไปใน html
-    for (let i=0;i<response.data.length;i++) {
-        let data = response.data[i]
-        htmlData += `<tr>
-            <td>${i+1}</td>
-            <td>${data.Timestamp}</td>
-            <td>${data.Temperature}</td>
-            <td>${data.Humidity}</td>
-            <td>${data.Nitrogen}</td>
-            <td>${data.Phosphorus}</td>
-            <td>${data.Potassium}</td>
-            <td>${data.PH}</td>
-            <td>${data.Rainfall}</td>
-        </tr>`
-    }
-
-    allDataDOM.innerHTML = htmlData
 }

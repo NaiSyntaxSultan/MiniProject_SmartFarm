@@ -89,6 +89,25 @@ app.get('/sensors/all', async (req, res) => {
     }
 })
 
+// path = GET /sensors/now สำหรับ get sensors ตาม เวลาตอนนี้ให้ออกมา
+app.get('/sensors/now', async (req, res) => {
+    try {
+        const [results] = await conn.query(`
+            SELECT * FROM sensors
+            WHERE Timestamp <= NOW()
+            ORDER BY Timestamp DESC
+            LIMIT 1;
+        `); // NOW() ค่าเวลาปัจจุบัน
+
+        res.json(results);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Something went wrong',
+            errorMessage: error.message
+        });
+    }
+})
+
 
 // path = GET /users/:id สำหรับการดึง users หลายคนออกมา
 app.get('/users/:id', async (req, res) => {
@@ -162,22 +181,30 @@ app.post('/users/login', async (req, res) => {
     try {
         const { Username, Password} = req.body
         const [results] = await conn.query('SELECT * FROM users WHERE Username = ?', Username)
+
+        if (results.length === 0) {
+            return res.status(400).json({
+                message: 'ล็อกอินไม่สำเร็จ: ไม่พบชื่อผู้ใช้'
+            });
+        }
+
         const userData = results[0]
         const match = await bcrypt.compare(Password, userData.Password)
         if (!match) {
             return res.status(400).json({ 
-                message: 'login fail' 
+                message: 'ล็อกอินไม่สำเร็จ: รหัสผ่านไม่ถูกต้อง' 
             });
         }
         return res.json({ 
             username: userData.Username,
-            message: 'login success',
+            message: 'ล็อกอินสำเร็จ',
             role: userData.UserRole
         });        
     } catch (error) {
-        res.status(401).json({
-            message: 'login fail'
-        })
+        console.error('Login error:', error);
+        res.status(500).json({
+            message: 'เกิดข้อผิดพลาดบางอย่าง'
+        });
     }
 })
 
