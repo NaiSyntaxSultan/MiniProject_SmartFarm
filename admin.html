@@ -3,13 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GreenSync</title>
+
+    <link rel="stylesheet" href="stylead.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-    <h1>
-        Welcome Admin
-    </h1>
+    
+    <div class="sidebar" data-aos="fade-right">
+        <div class="logo">
+            <img src="img/logo.png" alt="Logo">
+            <h1>GreenSync</h1>
+        </div>
+        
+        <div class="menu">
+            <a href="data-dashboard.html"><i class="fas fa-plug"></i> Dashboard</a>
+            <a href="plant-management.html"><i class="fas fa-file-invoice-dollar"></i> Management</a>
+            <a href="#"><i class="fas fa-user-friends"></i> Members</a>
+            <a href="#"><i class="fas fa-folder"></i> Projects</a>
+            <a href="#"><i class="fas fa-credit-card"></i> Plans & Billing</a>
+            <a href="admin.html" class="active"><i class="fas fa-cogs"></i> Admin</a>
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </div>
 
-    <a href="plant-management.html">plant</a>
+    <div class="slider-container" data-aos="fade-right">
+        <div class="slider">
+            <div class="slide"><img src="img/a.jpg" alt="Image 1"></div>
+            <div class="slide"><img src="img/b.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="img/c.jpg" alt="Image 3"></div>
+            <div class="slide"><img src="img/d.jpg" alt="Image 4"></div>
+            <div class="slide"><img src="img/e.jpg" alt="Image 5"></div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 </body>
 </html>
