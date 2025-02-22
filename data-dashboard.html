@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenSync</title>
+
+    <link rel="stylesheet" href="style1.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    
+    <div class="sidebar" data-aos="fade-right">
+        <div class="logo">
+            <img src="img/logo.png" alt="Logo">
+            <h1>GreenSync</h1>
+        </div>
+        
+        <div class="menu">
+            <a href="data-dashboard.html" class="active"><i class="fas fa-plug"></i> Dashboard</a>
+            <a href="plant-management.html"><i class="fas fa-file-invoice-dollar"></i> Management</a>
+            <a href="#"><i class="fas fa-user-friends"></i> Members</a>
+            <a href="#"><i class="fas fa-folder"></i> Projects</a>
+            <a href="#"><i class="fas fa-credit-card"></i> Plans & Billing</a>
+            <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+            <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="slider-container" data-aos="fade-right">
+        <div class="slider">
+            <div class="slide"><img src="img/a.jpg" alt="Image 1"></div>
+            <div class="slide"><img src="img/b.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="img/c.jpg" alt="Image 3"></div>
+            <div class="slide"><img src="img/d.jpg" alt="Image 4"></div>
+            <div class="slide"><img src="img/e.jpg" alt="Image 5"></div>
+        </div>
+    </div>
+
+    <header data-aos="fade-down">
+        <h1>Sensor Data Dashboard</h1>
+    </header>
+
+    <div class="container">
+        <div class="rol" data-aos="zoom-in">
+            <div class="sensor-card">
+                <h3>🌡️ Temperature</h3>
+                <p id="temp">-- °C</p>
+            </div>
+            <div class="sensor-card">
+                <h3>💧 Humidity</h3>
+                <p id="humidity">-- %</p>
+            </div>
+            <div class="sensor-card">
+                <h3>🧪 Nitrogen</h3>
+                <p id="nitrogen">-- mg/kg</p>
+            </div>
+            <div class="sensor-card">
+                <h3>🔬 Phosphorus</h3>
+                <p id="phosphorus">-- mg/kg</p>
+            </div>
+            <div class="sensor-card">
+                <h3>⚡ Potassium</h3>
+                <p id="potassium">-- mg/kg</p>
+            </div>
+            <div class="sensor-card">
+                <h3>🔵 pH Level</h3>
+                <p id="ph">--</p>
+            </div>
+            <div class="sensor-card">
+                <h3>☔ Rainfall</h3>
+                <p id="rainfall">-- mm</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-container" data-aos="fade-up">
+        <div class="chart">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="myChart1"></canvas>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="sensorTable" border="1">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Temperature (°C)</th>
+                    <th>Humidity (%)</th>
+                    <th>Nitrogen (mg/kg)</th>
+                    <th>Phosphorus (mg/kg)</th>
+                    <th>Potassium (mg/kg)</th>
+                    <th>pH</th>
+                    <th>Rainfall (mm)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ข้อมูลเซ็นเซอร์จะถูกเพิ่มที่นี่ -->
+            </tbody>
+        </table>
+    </div>    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="data-dashboard.js"></script>
+</body>
+</html>

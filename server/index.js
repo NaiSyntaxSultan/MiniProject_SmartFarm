@@ -54,6 +54,33 @@ app.get('/subplantsgr', async (req, res) => {
     res.json(results[0])
 })
 
+// path = GET /sensors สำหรับ get sensors ทั้งหมดที่บันทึกเข้าไปออกมา
+let sensorIndex = 0; // ตัวแปรเก็บ index ของแถวที่กำลังดึงข้อมูล
+
+app.get('/sensors', async (req, res) => {
+    try {
+        const [results] = await conn.query(`SELECT * FROM sensors ORDER BY Timestamp ASC, SensorID ASC LIMIT 1 OFFSET ?`, [sensorIndex]);
+
+        // เพิ่ม index เพื่อให้วนไปยังตัวถัดไป
+        sensorIndex++;
+
+        // นับจำนวนข้อมูลทั้งหมด
+        const [totalRows] = await conn.query(`SELECT COUNT(*) as count FROM sensors`);
+        if (sensorIndex >= totalRows[0].count) {
+            sensorIndex = 0; // รีเซ็ตกลับไปเริ่มใหม่เมื่อถึงตัวสุดท้าย
+        }
+
+        res.json(results.length > 0 ? results[0] : { 
+            message: "No data found" 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            error: error.message 
+        });
+    }
+});
+
+
 // path = GET /users/:id สำหรับการดึง users หลายคนออกมา
 app.get('/users/:id', async (req, res) => {
     try {
