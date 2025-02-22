@@ -55,30 +55,39 @@ app.get('/subplantsgr', async (req, res) => {
 })
 
 // path = GET /sensors สำหรับ get sensors ทั้งหมดที่บันทึกเข้าไปออกมา
-let sensorIndex = 0; // ตัวแปรเก็บ index ของแถวที่กำลังดึงข้อมูล
-
-app.get('/sensors', async (req, res) => {
+app.get('/sensors/all', async (req, res) => {
     try {
-        const [results] = await conn.query(`SELECT * FROM sensors ORDER BY Timestamp ASC, SensorID ASC LIMIT 1 OFFSET ?`, [sensorIndex]);
+        const [results] = await conn.query(`
+            SELECT * FROM sensors
+            WHERE Timestamp <= NOW()
+            ORDER BY Timestamp ASC;
+        `); // NOW() ค่าเวลาปัจจุบัน
 
-        // เพิ่ม index เพื่อให้วนไปยังตัวถัดไป
-        sensorIndex++;
+        // map คือการวนลูปแต่ละแถวเพื่อแปลงข้อมูลให้เป็นรูปแบบที่เราต้องการ
+        const formattedResults = results.map(row => ({
+            SensorID: row.SensorID,
+            // ตรวจสอบว่า row.Timestamp มีค่า (ไม่เป็น null หรือ undefined)
+            Timestamp: row.Timestamp
+                // แปลง timestamp ให้เป็นวันที่และเวลาในรูปแบบของประเทศไทย GMT+7
+                ? new Date(row.Timestamp).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })
+                : "Invalid Timestamp",
+            Nitrogen: row.Nitrogen,
+            Phosphorus: row.Phosphorus,
+            Potassium: row.Potassium,
+            Temperature: row.Temperature,
+            Humidity: row.Humidity,
+            PH: row.PH,
+            Rainfall: row.Rainfall
+        }));
 
-        // นับจำนวนข้อมูลทั้งหมด
-        const [totalRows] = await conn.query(`SELECT COUNT(*) as count FROM sensors`);
-        if (sensorIndex >= totalRows[0].count) {
-            sensorIndex = 0; // รีเซ็ตกลับไปเริ่มใหม่เมื่อถึงตัวสุดท้าย
-        }
-
-        res.json(results.length > 0 ? results[0] : { 
-            message: "No data found" 
-        });
+        res.json(formattedResults);
     } catch (error) {
-        res.status(500).json({ 
-            error: error.message 
+        res.status(500).json({
+            message: 'Something went wrong',
+            errorMessage: error.message
         });
     }
-});
+})
 
 
 // path = GET /users/:id สำหรับการดึง users หลายคนออกมา

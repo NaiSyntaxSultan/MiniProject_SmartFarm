@@ -6,11 +6,11 @@ const MAX_HISTORY = 10; // กำหนดจำนวนข้อมูลท�
 
 window.onload = async () => {
     await loadData()
-    setInterval(loadData, 3000); // อัปเดตทุก 3 วินาที
+    await loadAllData()
 }
 
 const loadData = async () => {
-    const response = await axios.get(`${BASE_URL}/sensors`)
+    const response = await axios.get(`${BASE_URL}/sensors/all`)
     const sensors = response.data
 
     // เพิ่มข้อมูลใหม่ลงใน sensorHistory และลบข้อมูลเก่าหากเกินจำนวนที่กำหนด
@@ -30,7 +30,6 @@ const loadData = async () => {
     // คำนวณค่าเฉลี่ยของข้อมูลเซ็นเซอร์
     const avgSensors = calculateAverage(sensorHistory);
     updateCharts(avgSensors);
-    updateTable(sensors);
 }
 
 // ฟังก์ชันคำนวณค่าเฉลี่ยของค่าต่างๆ ใน sensorHistory
@@ -110,31 +109,29 @@ const updateCharts = (sensors) => {
     }
 }
 
-const updateTable = (sensors) => {
-    const tableBody = document.getElementById("sensorTable").getElementsByTagName("tbody")[0];
+// แสดงข้อมูลเซ็นเซอร์ทั้งหมดบนตาราง
+const loadAllData =  async () => {
+    // Load sensors ทั้งหมดออกมาจาก API
+    const response = await axios.get(`${BASE_URL}/sensors/all`)
 
-    // สร้างแถวใหม่
-    const newRow = tableBody.insertRow();
+    const allDataDOM = document.querySelector("#sensorTable tbody")
 
-    const isoString = sensors.Timestamp;
-    const date = new Date(isoString);
-    const formattedDate = date.toLocaleString("th-TH", { 
-        year: "numeric", month: "2-digit", day: "2-digit", 
-        hour: "2-digit", minute: "2-digit", second: "2-digit"
-    });
-
-    // เพิ่มข้อมูลแต่ละคอลัมน์
-    newRow.insertCell(0).innerText = formattedDate;
-    newRow.insertCell(1).innerText = sensors.Temperature.toFixed(2);
-    newRow.insertCell(2).innerText = sensors.Humidity.toFixed(2);
-    newRow.insertCell(3).innerText = sensors.Nitrogen.toFixed(2);
-    newRow.insertCell(4).innerText = sensors.Phosphorus.toFixed(2);
-    newRow.insertCell(5).innerText = sensors.Potassium.toFixed(2);
-    newRow.insertCell(6).innerText = sensors.PH.toFixed(2);
-    newRow.insertCell(7).innerText = sensors.Rainfall.toFixed(2);
-
-    // จำกัดจำนวนแถวให้แสดงล่าสุด 10 ค่า
-    if (tableBody.rows.length > MAX_HISTORY) {
-        tableBody.deleteRow(0); // ลบแถวแรก (แถวเก่าที่สุด)
+    let htmlData = ''
+    // นำ plants ที่โหลดมาใส่กลับเข้าไปใน html
+    for (let i=0;i<response.data.length;i++) {
+        let data = response.data[i]
+        htmlData += `<tr>
+            <td>${i+1}</td>
+            <td>${data.Timestamp}</td>
+            <td>${data.Temperature}</td>
+            <td>${data.Humidity}</td>
+            <td>${data.Nitrogen}</td>
+            <td>${data.Phosphorus}</td>
+            <td>${data.Potassium}</td>
+            <td>${data.PH}</td>
+            <td>${data.Rainfall}</td>
+        </tr>`
     }
+
+    allDataDOM.innerHTML = htmlData
 }
