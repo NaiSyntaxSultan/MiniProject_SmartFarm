@@ -9,15 +9,6 @@
         width: 220px;
     }
 
-    header {
-        height: 110px;
-        font-size: 22px;
-
-        h3 {
-            margin-left: 150px;
-        }
-    }
-
     .rol {
         margin-top: 10px;
     }
@@ -55,15 +46,6 @@
     .slider-container {
         width: 180px;
         top: 570px;
-    }
-
-    header {
-        height: 110px;
-        font-size: 20px;
-
-        h1 {
-            margin-left: 150px;
-        }
     }
     .rol {
         margin-left: 150px;
@@ -109,12 +91,9 @@
     .slider-container {
         display: none;
     }
-    header {
-        height: 85px;
-        font-size: 19px;
-
-        h1 {
-            margin-left: 0px;
+    .bar {
+        .box {
+            width: 80%;
         }
     }
     .rol {
@@ -162,12 +141,9 @@
     .slider-container {
         display: none;
     }
-    header {
-        height: 80px;
-        font-size: 15px;
-
-        h1 {
-            margin-left: 0px;
+    .bar {
+        .box {
+            width: 80%;
         }
     }
     .chart-container {

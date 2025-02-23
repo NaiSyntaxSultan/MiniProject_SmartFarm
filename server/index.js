@@ -60,7 +60,7 @@ app.get('/sensors/all', async (req, res) => {
         const [results] = await conn.query(`
             SELECT * FROM sensors
             WHERE Timestamp <= NOW()
-            ORDER BY Timestamp ASC;
+            ORDER BY Timestamp ASC, SensorID ASC;
         `); // NOW() ค่าเวลาปัจจุบัน
 
         // map คือการวนลูปแต่ละแถวเพื่อแปลงข้อมูลให้เป็นรูปแบบที่เราต้องการ
@@ -95,7 +95,7 @@ app.get('/sensors/now', async (req, res) => {
         const [results] = await conn.query(`
             SELECT * FROM sensors
             WHERE Timestamp <= NOW()
-            ORDER BY Timestamp DESC
+            ORDER BY Timestamp DESC, SensorID DESC
             LIMIT 1;
         `); // NOW() ค่าเวลาปัจจุบัน
 
