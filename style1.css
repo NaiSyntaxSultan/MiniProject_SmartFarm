@@ -157,6 +157,8 @@ header {
     padding-left: 300px;
 }
 .chart {
+    display: flex;
+    align-items: center;
     width: 50%;
     height: 80%;
     margin-right: 220px;

@@ -1,0 +1,186 @@
+@media screen and (max-width: 1280px) {
+    .sidebar {
+        width: 220px;
+        padding: 16px;
+    }
+
+    .slider-container {
+        margin-left: 0px;
+        width: 220px;
+    }
+
+    header {
+        height: 110px;
+        font-size: 22px;
+
+        h3 {
+            margin-left: 150px;
+        }
+    }
+
+    .rol {
+        margin-top: 10px;
+    }
+    .sensor-card {
+        padding: 18px;
+    }
+    .sensor-card h3 {
+        font-size: 16px;
+    }
+    .sensor-card p {
+        font-size: 20px;
+    }
+
+    .chart-container {
+        height: 350px;
+    }
+    .chart {
+        width: 40%;
+    }
+    .table-container {
+        margin-left: 280px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .sidebar {
+        width: 180px;
+        padding: 10px;
+    }
+
+    .menu a {
+        font-size: 14px;
+    }
+
+    .slider-container {
+        width: 180px;
+        top: 570px;
+    }
+
+    header {
+        height: 110px;
+        font-size: 20px;
+
+        h1 {
+            margin-left: 150px;
+        }
+    }
+    .rol {
+        margin-left: 150px;
+    }
+    .sensor-card {
+        padding: 16px;
+    }
+    .sensor-card h3 {
+        font-size: 15px;
+    }
+    .sensor-card p {
+        font-size: 18px;
+    }
+    .chart-container {
+        height: 330px;
+        padding-left: 220px;
+    }
+    .table-container {
+        margin-left: 240px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100vw;
+        position: static;
+        height: 220px;
+    }
+    .logo {
+        margin-bottom: 0px;
+    }
+    .logo img {
+        width: 110px;
+    }
+    .logo h1 {
+        display: none;
+    }
+    .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+    .slider-container {
+        display: none;
+    }
+    header {
+        height: 85px;
+        font-size: 19px;
+
+        h1 {
+            margin-left: 0px;
+        }
+    }
+    .rol {
+        margin-left: 0px;
+    }
+    .chart-container {
+        width: 100%;
+        padding-left: 0px;
+    }
+    .chart {
+        width: 100%;
+        margin-left: 22px;
+        justify-content: space-around;
+        margin-right: 0px;
+    }
+    .con-table {
+        justify-content: center;
+    }
+    .table-container {
+        width: 90%;
+        margin-left: 0px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 100vw;
+        position: static;
+        height: 220px;
+    }
+    .logo {
+        margin-bottom: 0px;
+    }
+    .logo img {
+        width: 110px;
+    }
+    .logo h1 {
+        display: none;
+    }
+    .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+    .slider-container {
+        display: none;
+    }
+    header {
+        height: 80px;
+        font-size: 15px;
+
+        h1 {
+            margin-left: 0px;
+        }
+    }
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        height: 800px;
+        padding-left: 0px;
+    }
+    .chart {
+        margin-right: 0px;
+    }
+
+    .con-table {
+        margin-top: 26px;
+    }
+}
